@@ -1,0 +1,26 @@
+/*----------------------------
+    ADD PADDING
+----------------------------*/
+.padded_05em {
+    padding: 0.5em !important;
+}
+.padded_1em {
+    padding: 1em !important;
+}
+.padded_15em {
+    padding: 1.5em !important;
+}
+.padded_2em {
+    padding: 2em !important;
+}
+
+
+
+/*----------------------------
+    COLORS
+----------------------------*/
+
+.blue_light_background {
+    background: rgba(0, 154, 208, 0.6) !important;
+}
+
