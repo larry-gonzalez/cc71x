@@ -23,8 +23,22 @@
                 <a class="item active" id="rdfdat_item" onclick="activate_rdfdat()">RDF (turtle)</a>
                 <a class="item" id="sparql_item" onclick="activate_sparql()">SPARQL</a>
             </div>
-            <div id="rdfdat_div" class="visible content">test 1</div>
-            <div id="sparql_div" class="hidden content invisible">test 2</div>
+            <div id="rdfdat_div" class="visible content">
+                <div class="ui form">
+                     <div class="field">
+                          <textarea rows="20">#put your turtle data here</textarea>
+                          <button class="ui primary button">Load Triples</button>
+                     </div>
+                </div>
+            </div>
+            <div id="sparql_div" class="hidden content invisible">
+                <div class="ui form">
+                     <div class="field">
+                         <textarea rows="20">#make a simple sparql query&#13;&#10;SELECT ?s ?p ?o&#13;&#10;WHERE { ?s ?p ?o .}</textarea>
+                         <button class="ui primary button">Run Query</button>
+                     </div>
+                </div>
+            </div>
         </div>
     </div>
 
