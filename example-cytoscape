@@ -2,7 +2,7 @@ http://js.cytoscape.org/
 
 
 var cy = cytoscape({
-  container: document.getElementById('cy'), // container to render in
+  container: $('#cy'), // container to render in
 
   elements: [ // list of graph elements to start with
     { data: { id: 'a' } },
