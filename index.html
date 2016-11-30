@@ -15,8 +15,12 @@
 <body>
     <h3 class="ui center aligned header padded_1em blue_light_background">RDF visualization tool</h3>
     <div class="ui two column mobile reversed stackable grid">
-        <div class="column">
-            <div class="ui segment">Drawing div</div>
+        <div class="column" id="drawin_div">
+            <div class="ui pointing menu">
+                <a class="item active" >Result</a>
+            </div>
+
+            <div class="ui segment" style="height:400px">Drawing div</div>
         </div>
         <div class="column" id='input_div'>
             <div class="ui pointing menu">
@@ -26,7 +30,7 @@
             <div id="rdfdat_div" class="visible content">
                 <div class="ui form">
                      <div class="field">
-                          <textarea rows="20">#put your turtle data here</textarea>
+                          <textarea rows="22">#put your turtle data here</textarea>
                           <button class="ui primary button">Load Triples</button>
                      </div>
                 </div>
