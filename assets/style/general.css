@@ -32,3 +32,10 @@
 .invisible{
     display: none !important;
 }
+
+
+#cy {
+    width: 400px;
+    height: 400px;
+    display: block;
+      }
