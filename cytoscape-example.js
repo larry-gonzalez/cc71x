@@ -30,7 +30,9 @@ var cy = cytoscape({
       selector: 'node',
       style: {
         'background-color': 'data(color)',
-        'label': 'data(id)'
+        'label': 'data(id)',
+        'text-valign': 'center',
+        'text-halign': 'center',
       }
     },
 
@@ -54,8 +56,7 @@ var cy = cytoscape({
   ],
 
   layout: {
-    name: 'grid',
-    rows: 1
+    name: 'spread'
   }
 
 });
