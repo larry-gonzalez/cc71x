@@ -47,20 +47,16 @@ var cy = cytoscape({
         'line-color': 'data(color)',
         'target-arrow-color': 'data(color)',
         'target-arrow-shape': 'triangle',
+        'target-arrow-fill': 'filled',
         'label': 'data(label)'
       }
-    },
-
-    {
-      selector: '#a',
-      style: {
-        'background-color': '#blue',
-      }
     }
+
   ],
 
   layout: {
-    name: 'spread'
+    //name: 'spread'
+    name: 'grid'
   }
 
 });
