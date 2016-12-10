@@ -42,13 +42,30 @@ is_not_comment = function(string){
     return string[0] != '#'
 }
 
+is_not_prefix = function(string){
+    return string.substring(0,6).toLowerCase() != 'prefix'
+}
+
 get_spo = function(string){
     aux = string.split(' ')
     if (aux.length != 4){ alert('bad syntax:', string) }
-    return {'s':aux[0], 'p':aux[1], 'o':aux[2]} 
+    return {'s':aux[0], 'p':aux[1], 'o':aux[2], 'sc':'grey', 'pc':'gray', 'oc':'gray'}
 }
 
+get_select = function(string){
+    ret = []
+    aux = string.split(' ')
+    if (aux.indexOf('?s') >=0 ) { ret.push('s')}
+    if (aux.indexOf('?p') >=0 ) { ret.push('p')}
+    if (aux.indexOf('?o') >=0 ) { ret.push('o')}
+    return ret
+}
 
+get_where = function(string){
+    ret = []
+    aux = string.split(' ')
+    return {'s':aux[0], 'p':aux[1], 'o':aux[2]}
+}
 
 ///////////////////
 // big functions //
@@ -66,6 +83,7 @@ turtle2json = function(){
     string = $('#turtle_data').val()
     los = string.split('\n')
     los = los.filter(is_not_comment)
+    los = los.filter(is_not_prefix)
     data = los.map(get_spo)
     runquery() // kind of sequential
 }
@@ -74,6 +92,13 @@ turtle2json = function(){
 
 // change colors in json data
 runquery = function(){
+    string = $('#sparql_data').val();
+    los = string.split('\n');
+    los = los.filter(is_not_comment);
+    los = los.filter(is_not_prefix);
+    selec = get_select(los[0]);
+    where = get_where(los[1]);
+     
     //...
     json2cytoscape()
 }
