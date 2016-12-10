@@ -32,7 +32,7 @@
                 <div class="ui form">
                      <div class="field">
                           <textarea rows="22" id="turtle_data">#put your turtle data here</textarea>
-                          <button class="ui primary button" onclick="turtle2json()">Load Triples</button>
+                          <button class="ui primary button" onclick="generate_graph()">Load Triples</button>
                      </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <div class="ui form">
                      <div class="field">
                          <textarea rows="22" id="sparql_data">#make a simple sparql query&#13;&#10;SELECT ?s ?p ?o&#13;&#10;WHERE { ?s ?p ?o .}</textarea>
-                         <button class="ui primary button" onclick="run_query()">Run Query</button>
+                         <button class="ui primary button" onclick="generate_graph()">Run Query</button>
                      </div>
                 </div>
             </div>
