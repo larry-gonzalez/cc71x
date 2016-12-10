@@ -62,8 +62,11 @@ get_select = function(string){
 }
 
 get_where = function(string){
-    ret = []
-    aux = string.split(' ')
+    //no es optimo ni bonito
+    aux = string.replace('WHERE', '').replace('where','').replace('{','').replace('}','')
+    aux =  aux.replace('  ',' ').replace('  ',' ').replace('  ',' ')
+    aux = aux.split(' ')
+    if ( !aux[0]) { aux.splice(0, 1); }
     return {'s':aux[0], 'p':aux[1], 'o':aux[2]}
 }
 
@@ -98,7 +101,8 @@ runquery = function(){
     los = los.filter(is_not_prefix);
     selec = get_select(los[0]);
     where = get_where(los[1]);
-     
+    console.log(selec) // lista de los objetos a pintar
+    console.log(where) // valores a filtrar
     //...
     json2cytoscape()
 }
