@@ -54,15 +54,34 @@ get_spo = function(string){
 // big functions //
 ///////////////////
 
+//helper function to mental health
+generate_graph = function(){
+    turtle2json()
+}
+
+
+
+//load triples from user
 turtle2json = function(){
     string = $('#turtle_data').val()
     los = string.split('\n')
     los = los.filter(is_not_comment)
     data = los.map(get_spo)
+    runquery() // kind of sequential
 }
 
 
 
+// change colors in json data
+runquery = function(){
+    //...
+    json2cytoscape()
+}
+
+
+
+//transform json data to be 'elements' of cytoscape
+//read global variable data and return transformation for cytoscape
 json2cytoscape = function(){
     ele = [ // list of graph elements to start with
         { data: { id: 'abanico', color:'blue' } },
@@ -82,11 +101,17 @@ json2cytoscape = function(){
         { data: { id: 'fg', source: 'f', target: 'g', label: 'dos', color:'red'} },
         { data: { id: 'fh', source: 'f', target: 'h', label: 'tres', color:'blue'} },
         { data: { id: 'fi', source: 'f', target: 'indeterminadamente', label: 'cuatro', color:'yellow'} }
-    ]
+    ];
+    plot_cytoscape(ele)
+}
 
+
+
+//plot cytoscape graph
+plot_cytoscape = function(elements){
     var cy = cytoscape({
         container: $('#cy'), // container to render in
-        elements: ele,
+        elements: elements,
         style: [ // the stylesheet for the graph
             {
                 selector: 'node',
@@ -122,9 +147,4 @@ json2cytoscape = function(){
     cy.ready()
 }
 
-
-
-// change colors in json data
-runquery = function(){
-}
 
