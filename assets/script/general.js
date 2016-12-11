@@ -49,7 +49,7 @@ is_not_prefix = function(string){
 get_spo = function(string){
     aux = string.split(' ')
     if (aux.length != 4){ alert('bad syntax:', string) }
-    return {'s':aux[0], 'p':aux[1], 'o':aux[2], 'sc':'grey', 'pc':'gray', 'oc':'gray'}
+    return {'s':aux[0], 'p':aux[1], 'o':aux[2], 'sc':'grey', 'pc':'blue', 'oc':'orange'}
 }
 
 get_select = function(string){
@@ -101,10 +101,32 @@ runquery = function(){
     los = los.filter(is_not_prefix);
     selec = get_select(los[0]);
     where = get_where(los[1]);
+    console.log("selec")
     console.log(selec) // lista de los objetos a pintar
+    console.log("where")
     console.log(where) // valores a filtrar
     //...
+    applyQuery2Turtle()
     json2cytoscape()
+}
+
+
+//interpret query to retrieve elements of turtle data
+applyQuery2Turtle = function(){
+    /*console.log("data")
+    console.log(data)
+    console.log("selec") // lista de los objetos a pintar
+    console.log("where")
+    console.log(selec) // lista de los objetos a pintar
+    console.log(where)*/
+    node1 = "{ data: { id: '" + data[0]['s'] + "', color: '"+ data[0]['sc'] + "'} }"
+    node2 = "{ data: { id: '" + data[0]['o'] + "', color: '"+ data[0]['oc'] + "'} }"
+    
+    edges = "{ data: { id: '"+data[0]['s']+"TO"+data[0]['o']+"', source: '"+ data[0]['s'] + "', target: '"+ data[0]['o'] +"', label: '"+ data[0]['p'] +"', color:'"+ data[0]['pc'] +"'} }"
+    
+    /*console.log(data[0]['s'])
+    console.log(data[0]["s"])
+    console.log(nodes)*/
 }
 
 
@@ -112,8 +134,24 @@ runquery = function(){
 //transform json data to be 'elements' of cytoscape
 //read global variable data and return transformation for cytoscape
 json2cytoscape = function(){
-    ele = [ // list of graph elements to start with
-        { data: { id: 'abanico', color:'blue' } },
+    
+    jsonny = JSON.stringify(eval('('+node1+')'));
+    console.log("jsonny")
+    console.log(jsonny)
+    ele = []
+    jsonny2 = JSON.stringify(eval('('+node2+')'));
+    jsonEdge = JSON.stringify(eval('('+edges+')'));
+    
+    jsonny = JSON.parse(jsonny)
+    jsonny2 = JSON.parse(jsonny2)
+    jsonEdge = JSON.parse(jsonEdge)
+    ele.push(jsonny)
+    ele.push(jsonny2)
+    ele.push(jsonEdge)
+    console.log(aux)
+        /*ele = [ // list of graph elements to start with
+        nodes
+        /*{ data: { id: 'abanico', color:'blue' } },
         { data: { id: 'barco', color:'blue' } },
         { data: { id: 'c', color:'yellow' } },
         { data: { id: 'd', color:'yellow' } },
@@ -129,8 +167,8 @@ json2cytoscape = function(){
         { data: { id: 'af', source: 'abanico', target: 'f', label: 'test', color:'green'} },
         { data: { id: 'fg', source: 'f', target: 'g', label: 'dos', color:'red'} },
         { data: { id: 'fh', source: 'f', target: 'h', label: 'tres', color:'blue'} },
-        { data: { id: 'fi', source: 'f', target: 'indeterminadamente', label: 'cuatro', color:'yellow'} }
-    ];
+        { data: { id: 'fi', source: 'f', target: 'indeterminadamente', label: 'cuatro', color:'yellow'} }*/
+    //];
     plot_cytoscape(ele)
 }
 
