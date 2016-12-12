@@ -30,6 +30,7 @@ activate_sparql = function(){
 //////////////////////
 
 var data = {};
+var cyto = {};
 var temp = '';
 
 
@@ -106,27 +107,22 @@ runquery = function(){
     console.log("where")
     console.log(where) // valores a filtrar
     //...
-    applyQuery2Turtle()
     json2cytoscape()
 }
 
 
 //interpret query to retrieve elements of turtle data
-applyQuery2Turtle = function(){
-    /*console.log("data")
-    console.log(data)
-    console.log("selec") // lista de los objetos a pintar
-    console.log("where")
-    console.log(selec) // lista de los objetos a pintar
-    console.log(where)*/
-    node1 = "{ data: { id: '" + data[0]['s'] + "', color: '"+ data[0]['sc'] + "'} }"
-    node2 = "{ data: { id: '" + data[0]['o'] + "', color: '"+ data[0]['oc'] + "'} }"
-    
-    edges = "{ data: { id: '"+data[0]['s']+"TO"+data[0]['o']+"', source: '"+ data[0]['s'] + "', target: '"+ data[0]['o'] +"', label: '"+ data[0]['p'] +"', color:'"+ data[0]['pc'] +"'} }"
-    
-    /*console.log(data[0]['s'])
-    console.log(data[0]["s"])
-    console.log(nodes)*/
+applyQuery2Turtle = function(spo){
+    console.log(spo)
+    node1 = {'data': {'id': spo['s'], 'color':spo['sc'] }} 
+    node2 = {'data': {'id': spo['o'], 'color':spo['oc'] }} 
+    edges = {'data': {'id': spo['s']+"__TO__"+spo['o'],
+                      'source': spo['s'],
+                      'target': spo['o'],
+                      'label': spo['p'], 
+                      'color': spo['pc']}
+            }
+    return([node1, node2, edges])
 }
 
 
@@ -134,21 +130,14 @@ applyQuery2Turtle = function(){
 //transform json data to be 'elements' of cytoscape
 //read global variable data and return transformation for cytoscape
 json2cytoscape = function(){
-    
-    jsonny = JSON.stringify(eval('('+node1+')'));
-    console.log("jsonny")
-    console.log(jsonny)
     ele = []
-    jsonny2 = JSON.stringify(eval('('+node2+')'));
-    jsonEdge = JSON.stringify(eval('('+edges+')'));
+    for (i in data) {
+        l = applyQuery2Turtle(data[i])
+        ele.push(l[0])
+        ele.push(l[1])
+        ele.push(l[2])
+    }
     
-    jsonny = JSON.parse(jsonny)
-    jsonny2 = JSON.parse(jsonny2)
-    jsonEdge = JSON.parse(jsonEdge)
-    ele.push(jsonny)
-    ele.push(jsonny2)
-    ele.push(jsonEdge)
-    console.log(aux)
         /*ele = [ // list of graph elements to start with
         nodes
         /*{ data: { id: 'abanico', color:'blue' } },
