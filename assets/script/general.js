@@ -50,7 +50,7 @@ is_not_prefix = function(string){
 get_spo = function(string){
     aux = string.split(' ')
     if (aux.length != 4){ alert('bad syntax:', string) }
-    return {'s':aux[0], 'p':aux[1], 'o':aux[2], 'sc':'grey', 'pc':'blue', 'oc':'orange'}
+    return {'s':aux[0], 'p':aux[1], 'o':aux[2], 'sc':'grey', 'pc':'grey', 'oc':'grey'}
 }
 
 get_select = function(string){
@@ -107,7 +107,70 @@ runquery = function(){
     console.log("where")
     console.log(where) // valores a filtrar
     //...
+    
     json2cytoscape()
+}
+
+
+//process the query to highligth result
+processQuery = function(){
+    
+    if (where['s']!= "?s") {
+        for (i in data) {
+            
+            if (data[i]['s'] == where['s']) {
+
+                data[i]['sc'] = 'blue'
+                data[i]['pc'] = 'blue'
+                data[i]['oc'] = 'blue'
+                for (var j = 0; j < data.length; j++) {
+                    
+                    if (data[j]['o'] == where['s']){
+                        data[j]['oc'] = 'blue'
+                    }
+                }
+            }
+        }
+    }
+    else{
+        if (where['p']!= "?p") {
+            for (i in data) {
+                if (data[i]['p'] == where['p']) {
+                    data[i]['sc'] = 'green'
+                    data[i]['pc'] = 'green'
+                    data[i]['oc'] = 'green'
+                    for (var j = 0; j < data.length; j++) {
+                    
+                        if (data[j]['o'] == data[i]['s']){
+                            data[j]['oc'] = 'green'
+                        }
+
+                        if (data[j]['s'] == data[i]['o']){
+                            data[j]['sc'] = 'green'
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            if (where['o']!= "?o") {
+                for (i in data) {
+                    if (data[i]['o'] == where['o']) {
+                        data[i]['sc'] = 'orange'
+                        data[i]['pc'] = 'orange'
+                        data[i]['oc'] = 'orange'
+                        for (var j = 0; j < data.length; j++) {
+                    
+                            if (data[j]['s'] == data[i]['o']){
+                                data[j]['sc'] = 'orange'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 
@@ -130,6 +193,9 @@ applyQuery2Turtle = function(spo){
 //transform json data to be 'elements' of cytoscape
 //read global variable data and return transformation for cytoscape
 json2cytoscape = function(){
+    processQuery()
+    console.log("data")
+    console.log(data)
     ele = []
     for (i in data) {
         l = applyQuery2Turtle(data[i])
