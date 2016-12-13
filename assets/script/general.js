@@ -71,6 +71,24 @@ get_where = function(string){
     return {'s':aux[0], 'p':aux[1], 'o':aux[2]}
 }
 
+
+
+//interpret query to retrieve elements of turtle data
+applyQuery2Turtle = function(spo){
+    console.log(spo)
+    node1 = {'data': {'id': spo['s'], 'color':spo['sc'] }}
+    node2 = {'data': {'id': spo['o'], 'color':spo['oc'] }}
+    edges = {'data': {'id': spo['s']+"__TO__"+spo['o'],
+                      'source': spo['s'],
+                      'target': spo['o'],
+                      'label': spo['p'],
+                      'color': spo['pc']}
+            }
+    return([node1, node2, edges])
+}
+
+
+
 ///////////////////
 // big functions //
 ///////////////////
@@ -174,19 +192,6 @@ processQuery = function(){
 }
 
 
-//interpret query to retrieve elements of turtle data
-applyQuery2Turtle = function(spo){
-    console.log(spo)
-    node1 = {'data': {'id': spo['s'], 'color':spo['sc'] }} 
-    node2 = {'data': {'id': spo['o'], 'color':spo['oc'] }} 
-    edges = {'data': {'id': spo['s']+"__TO__"+spo['o'],
-                      'source': spo['s'],
-                      'target': spo['o'],
-                      'label': spo['p'], 
-                      'color': spo['pc']}
-            }
-    return([node1, node2, edges])
-}
 
 
 
