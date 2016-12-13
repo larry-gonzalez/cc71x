@@ -32,7 +32,7 @@ activate_sparql = function(){
 var data = {};
 var cyto = {};
 var temp = '';
-
+var simple_query = '#make a simple sparql query\nSELECT ?s ?p ?o\nWHERE { ?s ?p ?o .}'
 
 
 //////////////////////
@@ -75,7 +75,7 @@ get_where = function(string){
 
 //interpret query to retrieve elements of turtle data
 applyQuery2Turtle = function(spo){
-    console.log(spo)
+    //console.log(spo)
     node1 = {'data': {'id': spo['s'], 'color':spo['sc'] }}
     node2 = {'data': {'id': spo['o'], 'color':spo['oc'] }}
     edges = {'data': {'id': spo['s']+"__TO__"+spo['o'],
@@ -114,93 +114,40 @@ turtle2json = function(){
 
 // change colors in json data
 runquery = function(){
+    temp = data
     string = $('#sparql_data').val();
-    los = string.split('\n');
-    los = los.filter(is_not_comment);
-    los = los.filter(is_not_prefix);
-    selec = get_select(los[0]);
-    where = get_where(los[1]);
-    console.log("selec")
-    console.log(selec) // lista de los objetos a pintar
-    console.log("where")
-    console.log(where) // valores a filtrar
-    //...
-    
+    if (string != simple_query){
+        los = string.split('\n');
+        los = los.filter(is_not_comment);
+        los = los.filter(is_not_prefix);
+        selec = get_select(los[0]);
+        where = get_where(los[1]);
+
+        pintar = []
+
+        for (i in data) {
+            if ((where['s']=='?s'  || (where['s']!='?s' && where['s']==data[i]['s'] )) &&
+                (where['p']=='?p'  || (where['p']!='?p' && where['p']==data[i]['p'] )) &&
+                (where['o']=='?o'  || (where['o']!='?o' && where['o']==data[i]['o'] ))){
+                    if (selec.indexOf('s') >=0 ) { pintar.push(data[i]['s'])}
+                    if (selec.indexOf('p') >=0 ) { pintar.push(data[i]['p'])}
+                    if (selec.indexOf('o') >=0 ) { pintar.push(data[i]['o'])}
+            }
+        }
+        for (i in data) {
+            if (pintar.indexOf(data[i]['s']) >=0 ) { data[i]['sc']='yellow'}
+            if (pintar.indexOf(data[i]['p']) >=0 ) { data[i]['pc']='yellow'}
+            if (pintar.indexOf(data[i]['o']) >=0 ) { data[i]['oc']='yellow'}
+        }
+    }
     json2cytoscape()
 }
-
-
-//process the query to highligth result
-processQuery = function(){
-    
-    if (where['s']!= "?s") {
-        for (i in data) {
-            
-            if (data[i]['s'] == where['s']) {
-
-                data[i]['sc'] = 'blue'
-                data[i]['pc'] = 'blue'
-                data[i]['oc'] = 'blue'
-                for (var j = 0; j < data.length; j++) {
-                    
-                    if (data[j]['o'] == where['s']){
-                        data[j]['oc'] = 'blue'
-                    }
-                }
-            }
-        }
-    }
-    else{
-        if (where['p']!= "?p") {
-            for (i in data) {
-                if (data[i]['p'] == where['p']) {
-                    data[i]['sc'] = 'green'
-                    data[i]['pc'] = 'green'
-                    data[i]['oc'] = 'green'
-                    for (var j = 0; j < data.length; j++) {
-                    
-                        if (data[j]['o'] == data[i]['s']){
-                            data[j]['oc'] = 'green'
-                        }
-
-                        if (data[j]['s'] == data[i]['o']){
-                            data[j]['sc'] = 'green'
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            if (where['o']!= "?o") {
-                for (i in data) {
-                    if (data[i]['o'] == where['o']) {
-                        data[i]['sc'] = 'orange'
-                        data[i]['pc'] = 'orange'
-                        data[i]['oc'] = 'orange'
-                        for (var j = 0; j < data.length; j++) {
-                    
-                            if (data[j]['s'] == data[i]['o']){
-                                data[j]['sc'] = 'orange'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
-
 
 
 
 //transform json data to be 'elements' of cytoscape
 //read global variable data and return transformation for cytoscape
 json2cytoscape = function(){
-    processQuery()
-    console.log("data")
-    console.log(data)
     ele = []
     for (i in data) {
         l = applyQuery2Turtle(data[i])
@@ -209,26 +156,6 @@ json2cytoscape = function(){
         ele.push(l[2])
     }
     
-        /*ele = [ // list of graph elements to start with
-        nodes
-        /*{ data: { id: 'abanico', color:'blue' } },
-        { data: { id: 'barco', color:'blue' } },
-        { data: { id: 'c', color:'yellow' } },
-        { data: { id: 'd', color:'yellow' } },
-        { data: { id: 'e', color:'gray' } },
-        { data: { id: 'f', color:'gray' } },
-        { data: { id: 'g', color:'green' } },
-        { data: { id: 'h', color:'green' } },
-        { data: { id: 'indeterminadamente', color:'green' } },
-        { data: { id: 'ab', source: 'abanico', target: 'barco', label: 'uno', color:'gray'} },
-        { data: { id: 'ac', source: 'abanico', target: 'c', label: 'edge', color:'gray'} },
-        { data: { id: 'ad', source: 'abanico', target: 'd', label: 'arista', color:'gray'} },
-        { data: { id: 'ae', source: 'abanico', target: 'e', label: 'enlace', color:'gray'} },
-        { data: { id: 'af', source: 'abanico', target: 'f', label: 'test', color:'green'} },
-        { data: { id: 'fg', source: 'f', target: 'g', label: 'dos', color:'red'} },
-        { data: { id: 'fh', source: 'f', target: 'h', label: 'tres', color:'blue'} },
-        { data: { id: 'fi', source: 'f', target: 'indeterminadamente', label: 'cuatro', color:'yellow'} }*/
-    //];
     plot_cytoscape(ele)
 }
 
