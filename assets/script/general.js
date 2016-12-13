@@ -130,13 +130,13 @@ runquery = function(){
                 (where['p']=='?p'  || (where['p']!='?p' && where['p']==data[i]['p'] )) &&
                 (where['o']=='?o'  || (where['o']!='?o' && where['o']==data[i]['o'] ))){
                     if (selec.indexOf('s') >=0 ) { pintar.push(data[i]['s'])}
-                    if (selec.indexOf('p') >=0 ) { pintar.push(data[i]['p'])}
+                    if (selec.indexOf('p') >=0 ) { data[i]['pc'] = 'yellow'}
                     if (selec.indexOf('o') >=0 ) { pintar.push(data[i]['o'])}
             }
         }
         for (i in data) {
             if (pintar.indexOf(data[i]['s']) >=0 ) { data[i]['sc']='yellow'}
-            if (pintar.indexOf(data[i]['p']) >=0 ) { data[i]['pc']='yellow'}
+            //if (pintar.indexOf(data[i]['p']) >=0 ) { data[i]['pc']='yellow'}
             if (pintar.indexOf(data[i]['o']) >=0 ) { data[i]['oc']='yellow'}
         }
     }
